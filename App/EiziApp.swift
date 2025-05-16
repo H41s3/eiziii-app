@@ -13,12 +13,14 @@ struct EiziApp: App {
                 .tabItem {
                     Label("Chat", systemImage: "bubble.left.and.bubble.right")
                 }
+                
                 NavigationStack {
                     MoodTrackerView()
                 }
                 .tabItem {
                     Label("Mood Tracker", systemImage: "face.smiling")
                 }
+                
                 NavigationStack {
                     RemindersView()
                 }
