@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct EiziApp: App {
+struct EiziiiApp: App {
     @StateObject private var chatViewModel = ChatViewModel()
     
     var body: some Scene {
