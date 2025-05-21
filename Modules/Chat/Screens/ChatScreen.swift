@@ -68,10 +68,3 @@ struct ChatScreen: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-// Preview
-struct ChatScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatScreen(viewModel: ChatPresenter())
-    }
-}

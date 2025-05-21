@@ -36,10 +36,5 @@ class ChatPresenter: ObservableObject {
     func changePersonality(_ personality: Personality) {
         selectedPersonality = personality
         user.preferredPersonality = personality
-        // TODO: Save to persistent storage
-    }
-    
-    func showPersonalitySelector() {
-        // TODO: Implement personality selector presentation
     }
 }
