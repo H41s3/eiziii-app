@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Main App
 @main
-struct EiziiiApp: App {
+struct EiziTestFile: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -12,14 +12,7 @@ struct EiziiiApp: App {
 
 // MARK: - Content View
 struct ContentView: View {
-    @StateObject private var user = UserProfile(
-        name: "User",
-        preferredPersonality: .emotionalSupport,
-        enableNotifications: true,
-        enableTaglish: false,
-        customPrompt: "",
-        lastMoodCheck: nil
-    )
+    @StateObject private var user = UserProfileModel()
     
     var body: some View {
         TabView {
@@ -47,32 +40,14 @@ struct ContentView: View {
 }
 
 // MARK: - Models
-struct UserProfile: Identifiable, Codable {
-    var id: UUID
-    var name: String
-    var preferredPersonality: Personality
-    var enableNotifications: Bool
-    var enableTaglish: Bool
-    var customPrompt: String
-    var lastMoodCheck: Date?
-    
-    init(
-        id: UUID = UUID(),
-        name: String = "",
-        preferredPersonality: Personality = .emotionalSupport,
-        enableNotifications: Bool = true,
-        enableTaglish: Bool = false,
-        customPrompt: String = "",
-        lastMoodCheck: Date? = nil
-    ) {
-        self.id = id
-        self.name = name
-        self.preferredPersonality = preferredPersonality
-        self.enableNotifications = enableNotifications
-        self.enableTaglish = enableTaglish
-        self.customPrompt = customPrompt
-        self.lastMoodCheck = lastMoodCheck
-    }
+class UserProfileModel: ObservableObject {
+    @Published var id = UUID()
+    @Published var name: String = "User"
+    @Published var preferredPersonality: Personality = .emotionalSupport
+    @Published var enableNotifications: Bool = true
+    @Published var enableTaglish: Bool = false
+    @Published var customPrompt: String = ""
+    @Published var lastMoodCheck: Date? = nil
 }
 
 enum Personality: String, CaseIterable, Codable {
@@ -133,9 +108,9 @@ class ChatPresenter: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedPersonality: Personality
     
-    let user: UserProfile
+    let user: UserProfileModel
     
-    init(user: UserProfile) {
+    init(user: UserProfileModel) {
         self.user = user
         self.selectedPersonality = user.preferredPersonality
     }
@@ -169,9 +144,9 @@ class MoodTrackerPresenter: ObservableObject {
     @Published var newMoodNote = ""
     @Published var selectedTags: Set<String> = []
     
-    private let user: UserProfile
+    private let user: UserProfileModel
     
-    init(user: UserProfile) {
+    init(user: UserProfileModel) {
         self.user = user
         loadMoods()
     }
@@ -220,11 +195,11 @@ class MoodTrackerPresenter: ObservableObject {
 
 @MainActor
 class SettingsPresenter: ObservableObject {
-    @Published var user: UserProfile
+    @Published var user: UserProfileModel
     @Published var showingNameEdit = false
     @Published var newName = ""
     
-    init(user: UserProfile) {
+    init(user: UserProfileModel) {
         self.user = user
         self.newName = user.name
     }
@@ -315,7 +290,7 @@ struct ChatScreen: View {
 struct MoodTrackerScreen: View {
     @StateObject private var presenter: MoodTrackerPresenter
     
-    init(user: UserProfile) {
+    init(user: UserProfileModel) {
         _presenter = StateObject(wrappedValue: MoodTrackerPresenter(user: user))
     }
     
@@ -475,7 +450,7 @@ struct RemindersView: View {
 struct SettingsScreen: View {
     @StateObject private var presenter: SettingsPresenter
     
-    init(user: UserProfile) {
+    init(user: UserProfileModel) {
         _presenter = StateObject(wrappedValue: SettingsPresenter(user: user))
     }
     
