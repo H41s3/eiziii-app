@@ -14,7 +14,7 @@ struct EiziiiApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
-                ChatScreen(user: user)
+                ChatScreen(viewModel: ChatPresenter(user: user))
                     .tabItem {
                         Label("Chat", systemImage: "message.fill")
                     }
@@ -24,6 +24,11 @@ struct EiziiiApp: App {
                         Label("Mood", systemImage: "heart.fill")
                     }
                 
+                RemindersView()
+                    .tabItem {
+                        Label("Reminders", systemImage: "bell")
+                    }
+                
                 SettingsScreen(user: user)
                     .tabItem {
                         Label("Settings", systemImage: "gear")
@@ -31,4 +36,4 @@ struct EiziiiApp: App {
             }
         }
     }
-} 
+}
